@@ -2,10 +2,13 @@ HANDS
 =====
 
 HANDS an HTML And Node.js Development System 
+
 An approach for web development  
 
 
-In this project, a very compelling proposition is presented, an approach for web development that is a hybrid of Single Page Applications (SPA) and server side applications.  The proposed architecture provides a simplistic approach for development.  The focus is on HTML, JavaScript, Cascading Style Sheets, and Node.js.  The architecture provides all the components required for students to start developing web applications and web services.  The HTML And Node.js Development System (HANDS) is a hybrid approach leveraging the simplicity of plain old HTML pages, the AJAX injection of HTML from SPA frameworks, and the server-side processing found in the Node.js framework.  The project includes a landing page, kitchen sink page (bootstrap html examples), and a simple REST service.
+In this project, a very compelling proposition is presented, an approach for web development that is a hybrid of Single Page Applications (SPA) and server side applications.  The proposed architecture provides a simplistic approach for development.  The focus is on HTML, JavaScript, Cascading Style Sheets, and Node.js.  
+
+The architecture provides all the components required for students to start developing web applications and web services.  The HTML And Node.js Development System (HANDS) is a hybrid approach leveraging the simplicity of plain old HTML pages, the AJAX injection of HTML from SPA frameworks, and the server-side processing found in the Node.js framework.  The project includes a landing page, kitchen sink page (bootstrap html examples), and a simple REST service.
 
 
 #####Installation Instructions
