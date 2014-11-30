@@ -10,10 +10,11 @@ In this project, a very compelling proposition is presented, an approach for web
 
 #####Installation Instructions
 
-1) Download HENS from GitHub or use your Node.js environment/system 
+1) Download HENS from GitHub or use your Node.js environment/system.  HENS is a portable system for software development.  
 [HENS](https://github.com/ChipSoftTech/HENS).
 
 2) Download HANDS zip file
+[HANDS](https://github.com/ChipSoftTech/HANDS/archive/master.zip).
 
 3) Unzip to local drive or USB
 
