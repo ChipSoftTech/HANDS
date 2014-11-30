@@ -10,6 +10,9 @@ In this project, a very compelling proposition is presented, an approach for web
 
 The architecture provides all the components required for students to start developing web applications and web services.  The HTML And Node.js Development System (HANDS) is a hybrid approach leveraging the simplicity of plain old HTML pages, the AJAX injection of HTML from SPA frameworks, and the server-side processing found in the Node.js framework.  The project includes a landing page, kitchen sink page (bootstrap html examples), and a simple REST service.
 
+![alt tag](https://github.com/ChipSoftTech/HANDS/blob/master/img/hands.PNG)
+
+
 
 #####Installation Instructions
 
