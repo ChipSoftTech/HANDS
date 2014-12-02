@@ -14,13 +14,10 @@ var WORKERS = process.env.WORKERS || require('os').cpus().length;
 
 var main = (function () {
 	if (cluster.isMaster) {
-		//for dev, only need 1 worker
-		WORKERS = 1;
-
 		//master process
 		console.log('Master started.  Starting cluster with %s workers.', WORKERS);		
 		
-		//for dev, only need 1 process.
+		//create workers
 		for (var i = 0; i < WORKERS; ++i) {
 			var worker = cluster.fork().process;
 			console.log('Worker %s started.  Listening on port %s.', worker.pid, PORT);
