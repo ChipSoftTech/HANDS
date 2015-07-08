@@ -74,7 +74,6 @@ var main = (function () {
 			//now run the handler function in the domain.  This will handle each request.
 			d.run(function () {
 				var postData = '';
-				
 				//chunk post data, append
 				req.addListener('data', function (postDataChunk) {
 					postData += postDataChunk;
@@ -90,7 +89,7 @@ var main = (function () {
 					
 					var uri;
 					uri = url.parse(req.url).pathname;
-
+					
 					if (uri === '/api/v1/teams') {
 						apiv1.fetchTeams(data, callback);
 					} else {
@@ -101,10 +100,16 @@ var main = (function () {
 			
 			var callback = function(err,data) {
 				if(err) {
-					console.log('callback err: %s', err);
-					res.writeHead(400, {'Content-Type': 'application/json'});
-					res.write('{"error": "' + err + '"}');
-					res.end(); 
+					if(server.currentRequest.isAPI) {
+						console.log('callback err: %s', err);
+						res.writeHead(400, {'Content-Type': 'application/json'});
+						res.write('{"error": "' + err + '"}');
+						res.end(); 						
+					} else {
+						apiv1.serveFromDisk("404.html", res);
+					}
+					
+
 				} else {
 					//cache for 10 minutes local, shared cache 1 hour  -- or use without cache for dev debugging	
 					res.writeHead(200, {'Content-Type': 'application/json', "Cache-Control": "public, max-age=600, s-maxage=3600"});
