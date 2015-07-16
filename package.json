@@ -1,0 +1,48 @@
+{
+  "name": "HANDS",
+  "description": "HANDS - a REST Server for MongoDB",
+  "version": "0.0.2",
+  "author": "Brian Carter <briancarter@chipsofttech.com>",
+  "main": "server.js",
+  "directories": {
+    "lib": "./lib"
+  },
+  "keywords": [
+    "mongodb",
+    "mongo",
+    "db",
+    "rest",
+    "restful",
+    "api"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://?????"
+  },
+  "bugs": {
+    "url": "https://git.chipsofttech.com/?????"
+  },
+  "dependencies": {
+    "mongodb": "*",
+    "restify": "*",
+	"bson": "*",
+	"bunyan": "*",
+	"jsonwebtoken": "*",
+	"require-directory": "*"
+  },
+  "devDependencies": {
+    "supertest": "*",
+    "mocha": "*"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "scripts": {
+    "test": "mocha -R spec"
+  },
+  "preferGlobal": true,
+  "bin": {
+    "server": "./bin/server"
+  }
+}
