@@ -166,6 +166,12 @@ module.exports.server = server;
 var requireDirectory = require('require-directory');
 module.exports = requireDirectory(module, './lib');
 
+// Capture '/' or any request for html, js or css files
+server.get(/(^\/$)|(\.(html|js|css|json|jpg)$)/, restify.serveStatic({
+    directory: './client',
+    default: 'index.html'
+}));
+
 
 server.listen(config.server.port, function () {
   console.log("%s listening at %s", server.name, server.url);
