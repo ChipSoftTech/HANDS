@@ -5,11 +5,17 @@
  * HANDS
  *****************************************************************************/
 
-// add packages 
+ // add packages 
 var fs = require("fs"),
   mongodb = require("mongodb"),
   restify = module.exports.restify = require("restify"),
   bunyan = require('bunyan');
+  
+// setup debug
+var DEBUGPREFIX = "DEBUG: ";
+var debug  = module.exports.debug = function (str) {
+};
+debug("server.js is loaded");  
 
 // config setup from settings or file
 var config = {
@@ -22,23 +28,15 @@ var config = {
     "address": "0.0.0.0"
   },
   "flavor": "mongodb",
-  "debug": false
+  "debug": true
 };
 
 try {
   config = JSON.parse(fs.readFileSync(process.cwd() + "/config.json"));
 } catch (e) {
-  // no config file - fall back to above
+  debug("No config.json file found. Fall back to default config.");
 }
 module.exports.config = config;
-
-// setup debug
-var DEBUGPREFIX = "DEBUG: ";
-var debug  = module.exports.debug = function (str) {
-  if (config.debug) {
-    console.log(DEBUGPREFIX + str);
-  }
-};
 
 // logger daily file rotate keep
 var log = bunyan.createLogger({
@@ -59,6 +57,7 @@ module.exports.jwt = jwt;
 
 // server settings
 var server = restify.createServer({log: log, name: 'HANDS'});
+module.exports.server = server;
 
 // set the Connection header to close and remove Content-Length if cURL
 server.pre(restify.pre.userAgentConnection());
@@ -158,13 +157,12 @@ server.use(function authenticate(req, res, next) {
   }
 });
 
+var rest = require('./lib/rest');
+var auth = require('./lib/auth');
 
-
-
-module.exports.server = server;
-
-var requireDirectory = require('require-directory');
-module.exports = requireDirectory(module, './lib');
+//todo:  add back in require directory level, was breaking mocha tests
+//var requireDirectory = require('require-directory');
+//module.exports = requireDirectory(module, './custom');
 
 // Capture '/' or any request for html, js or css files
 server.get(/(^\/$)|(\.(html|js|css|json|jpg)$)/, restify.serveStatic({
