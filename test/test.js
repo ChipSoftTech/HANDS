@@ -5,17 +5,21 @@
  * HANDS
  *****************************************************************************/
 
-var main = require('../server'),
-  supertest = require('supertest'),
+var supertest = require('supertest'),
   assert = require('assert'),
   http = require('http');
 
+var main = require('../server');
+  
+console.log("main: " + main);	
 var objectId;
 var request = supertest(main.server);
 
 /* Setting up configuration for testing */
+main.debug("test.js is loaded");
+
 main.config.flavor = "normal";
-main.config.debug = false;
+main.config.debug = true;
 delete main.config.db.username;
 delete main.config.db.password;
 
@@ -28,7 +32,7 @@ describe("Testing HANDS", function () {
 
 	it("Should create a simple document", function (done) {
 	request
-	  .post('/tests/tests')
+	  .post('/api/v1/tests/tests')
 	  .type('application/json')
 	  .send({"test" : "create"})
 	  .expect(201)
@@ -38,10 +42,12 @@ describe("Testing HANDS", function () {
 		}
 		assert.deepEqual(res.body, {"ok": 1});
 		var location = res.header.location.split('/').slice(1);
-		assert.equal(location[0], 'tests');
-		assert.equal(location[1], 'tests');
-		assert.equal(location[2].length, 24);
-		objectId = location[2];
+		assert.equal(location[0], 'api');
+		assert.equal(location[1], 'v1');
+		assert.equal(location[2], 'tests');
+		assert.equal(location[3], 'tests');
+		assert.equal(location[4].length, 24);
+		objectId = location[4];
 		done();
 	  });
 	});
@@ -49,7 +55,7 @@ describe("Testing HANDS", function () {
   
 	it("Should check that document exists", function (done) {
 	request
-	  .get('/tests/tests/' + objectId)
+	  .get('/api/v1/tests/tests/' + objectId)
 	  .type('application/json')
 	  .expect(200)
 	  .end(function (err, res) {
@@ -68,7 +74,7 @@ describe("Testing HANDS", function () {
   
 	it("Should update a document", function (done) {
 	request
-	  .put('/tests/tests/' + objectId)
+	  .put('/api/v1/tests/tests/' + objectId)
 	  .type('application/json')
 	  .send({"test" : "updated"})
 	  .expect(200)
@@ -84,7 +90,7 @@ describe("Testing HANDS", function () {
 
 	it("Should check that document is updated", function (done) {
 	request
-	  .get('/tests/tests/' + objectId)
+	  .get('/api/v1/tests/tests/' + objectId)
 	  .type('application/json')
 	  .expect(200)
 	  .end(function (err, res) {
@@ -102,7 +108,7 @@ describe("Testing HANDS", function () {
 	
 	it("Should delete a document", function (done) {
 	request
-	  .del('/tests/tests/' + objectId)
+	  .del('/api/v1/tests/tests/' + objectId)
 	  .type('application/json')	  
 	  .expect(200)
 	  .end(function (err, res) {
@@ -116,7 +122,7 @@ describe("Testing HANDS", function () {
 
 	it("Should check that document is deleted", function (done) {
 	request
-	  .get('/tests/tests/' + objectId)
+	  .get('/api/v1/tests/tests/' + objectId)
 	  .type('application/json')
 	  .expect(404, done);
 	});
