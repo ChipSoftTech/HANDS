@@ -77,13 +77,8 @@ Server settings for where and how the rest api is going to be run.
         address [string]
 
 General settings
-    flavor [string] (mongodb or normal)
 	debug [boolean]
 	requiretoken [boolean]
-
-#### Flavors
-* Choose **mongodb** as flavor to keep using *\_id* as primary key for a document.
-* Choose **normal** as flavor if you want to change *\_id* to *id*
 
 #### Debug	
 * Choose **true** to output debug to standard output
