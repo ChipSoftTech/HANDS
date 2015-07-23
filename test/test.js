@@ -46,7 +46,6 @@ describe("Testing HANDS", function () {
 		assert.equal(location[1], 'v1');
 		assert.equal(location[2], 'tests');
 		assert.equal(location[3], 'tests');
-		assert.equal(location[4].length, 24);
 		objectId = location[4];
 		done();
 	  });
@@ -65,7 +64,7 @@ describe("Testing HANDS", function () {
 		
 		assert.deepEqual(res.body, {
 		  "test": "create",
-		  "id": objectId
+		  "_id": objectId
 		});
 		
 		done();
@@ -98,8 +97,8 @@ describe("Testing HANDS", function () {
 		  return done(err);
 		}
 		assert.deepEqual(res.body, {
+		  "_id": objectId,
 		  "test": "updated",
-		  "id": objectId
 		});
 		done();
 	  });

@@ -27,7 +27,6 @@ var config = {
     "port": 3000,
     "address": "0.0.0.0"
   },
-  "flavor": "mongodb",
   "debug": true
 };
 
