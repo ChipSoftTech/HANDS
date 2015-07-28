@@ -33,6 +33,7 @@ var debug  = module.exports.debug = function (str) {
 };
 
 debug("server.js is loaded"); 
+
 try {
   config = JSON.parse(fs.readFileSync(process.cwd() + "/config.json"));
 } catch (e) {
