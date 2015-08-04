@@ -5,7 +5,7 @@
  * HANDS
  *****************************************************************************/
 
- // add packages 
+// add packages 
 var fs = require("fs"),
   mongodb = require("mongodb"),
   restify = module.exports.restify = require("restify"),
@@ -96,7 +96,7 @@ var security = require(__dirname + "/lib/security").security;
 server.use(function authenticate(req, res, next) {
 	var authorized = security.authorize(req);
  
-	if(authorized != -1) { 
+	if(authorized) { 
 		next();
 	}
 
@@ -116,7 +116,6 @@ server.get(/(^\/$)|(\.(html|js|css|json|jpg)$)/, restify.serveStatic({
     directory: './client',
     default: 'index.html'
 }));
-
 
 server.listen(config.server.port, function () {
   console.log("%s listening at %s", server.name, server.url);
