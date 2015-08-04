@@ -11,12 +11,6 @@ var fs = require("fs"),
   restify = module.exports.restify = require("restify"),
   bunyan = require('bunyan');
   
-// setup debug
-var DEBUGPREFIX = "DEBUG: ";
-var debug  = module.exports.debug = function (str) {
-};
-debug("server.js is loaded");  
-
 // config setup from settings or file
 var config = {
   "db": {
@@ -30,12 +24,23 @@ var config = {
   "debug": true
 };
 
+// setup debug
+var DEBUGPREFIX = "DEBUG: ";
+var debug  = module.exports.debug = function (str) {
+  if (config.debug) {
+    console.log(DEBUGPREFIX + str);
+  }	
+};
+
+debug("server.js is loaded"); 
+
 try {
   config = JSON.parse(fs.readFileSync(process.cwd() + "/config.json"));
 } catch (e) {
   debug("No config.json file found. Fall back to default config.");
 }
 module.exports.config = config;
+
 
 // logger daily file rotate keep
 var log = bunyan.createLogger({
@@ -85,79 +90,22 @@ server.use(restify.throttle({
   }
 }));
 
+var security = require(__dirname + "/lib/security").security;
 
 //each call gets authenticated and authorized 
 server.use(function authenticate(req, res, next) {
-  var token, decoded; 
-  
-  if(config.requiretoken)
-  {
-	if (req.headers && req.headers.authorization) {
-		var parts = req.headers.authorization.split(' ');
-		if (parts.length == 2) {
-		  var scheme = parts[0], credentials = parts[1];
+	var authorized = security.authorize(req);
+ 
+	if(authorized != -1) { 
+		next();
+	}
 
-		  if (/^Bearer$/i.test(scheme)) {
-			token = credentials;
-
-			try {
-			  var decoded = jwt.verify(token, 'shhhhh');
-			  req.currentToken = decoded;
-			  debug("token: " + JSON.stringify(token));
-			  debug("decoded: " + JSON.stringify(decoded));	
-
-			  if(req.url == "/api/v1/auth/jwt") {
-				  next();
-			  }
-			  
-			  var db = req.params.db;
-			  var collection = req.params.db + "-" + req.params.collection;
-			  var claim;
-			  
-				switch (req.method) {
-					case "POST":   //Create
-						next();					
-						break;				
-					case "GET":    //Read
-						// collection auth 1st
-						if( collection && decoded[collection] && decoded[collection].read == 1) {
-							claim = decoded[collection];
-							next();	
-						} 
-						
-						// db auth 2nd
-						if( collection && decoded[db] && decoded[db].read == 1) {
-							claim = decoded[db];				
-							next();
-						} 					
-						
-						break;
-					case "PUT":    //Update
-						next();
-						break;
-					case "DELETE":  //Delete
-						next();
-						break;
-					default:
-						// do nothing so not auth will trigger below
-						break;
-				}		  
-			  
-			} catch(err) {
-			  next(new restify.NotAuthorizedError());
-			}		
-		  } 
-		}
-	  }
-	  
-	   next(new restify.NotAuthorizedError()); 
-  } else {
-	  next();
-  }
+	next(new restify.NotAuthorizedError()); 
 });
 
-var rest = require('./lib/rest');
 var auth = require('./lib/auth');
+var rest = require('./lib/rest');
+
 
 //todo:  add back in require directory level, was breaking mocha tests
 //var requireDirectory = require('require-directory');
