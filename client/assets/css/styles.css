@@ -416,3 +416,28 @@ header h2.tzine a{
 	font-size: 40px;
 }
 
+
+
+/*---------------------------
+	My Page
+----------------------------*/
+
+.my{
+	opacity: 0;
+	transition: 0.6s;
+	pointer-events: none;
+	position: absolute;
+	left: 0;
+	top: 100px;
+	width: 100%;
+}
+
+.my.visible{
+	opacity: 1;
+}
+
+.my h3{
+	font-size: 90px;
+}
+
+
