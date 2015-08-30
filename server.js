@@ -77,6 +77,8 @@ server.on('after', restify.auditLogger({
 // bundle plugins
 server.use(restify.acceptParser(server.acceptable));
 server.use(restify.authorizationParser());
+restify.CORS.ALLOW_HEADERS.push('authorization');
+server.use(restify.CORS());
 server.use(restify.dateParser());
 server.use(restify.queryParser());
 server.use(restify.bodyParser());
@@ -95,15 +97,27 @@ server.use(restify.throttle({
 
 var security = require(__dirname + "/lib/security").security;
 
+server.pre(function(req, res, next) {
+	if(req.url.indexOf("/api/") == -1 && req.url != "/") {
+		if(req.url.indexOf(".") == -1) {
+			req.url += ".html";
+			return next();			
+		}
+	}
+	
+  return next();
+});
+
+
 //each call gets authenticated and authorized
 server.use(function authenticate(req, res, next) {
 	var authorized = security.authorize(req);
 
 	if (authorized) {
-		next();
+		return next();
 	}
 
-	next(new restify.NotAuthorizedError());
+	return next(new restify.NotAuthorizedError());
 });
 
 var auth = require('./lib/auth');
